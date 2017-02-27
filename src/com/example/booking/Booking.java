@@ -26,8 +26,6 @@ public class Booking {
 
             double discountValue = 0.05;
 
-            System.out.println(outputMethod.get("Type"));
-
             double subTotal = BookingCalc.calculate(outputMethod.get("Type"), outputMethod.get("Price"), outputMethod.get("Guests"),
                     outputMethod.get("Amenities"), outputMethod.get("Days"));
 
@@ -35,7 +33,7 @@ public class Booking {
 
             double total = checkForDiscount(outputMethod.get("Days"), subTotal, discountValue);
 
-            System.out.println("Total" + new DecimalFormat("#.00").format(total));
+            System.out.println("Total: £" + new DecimalFormat("#.00").format(total));
             return;
         }
 
@@ -50,15 +48,17 @@ public class Booking {
         System.out.println("Enter the number of guests");
         int guests = scan.nextInt();
 
-        System.out.println("Enter any amenities");
+        System.out.println("Enter costs for any other amenities");
         int amenities = scan.nextInt();
 
         System.out.println("Enter the number of days");
         int days = scan.nextInt();
 
         double discountValue = 0.05;
-
         double subTotal = BookingCalc.calculate(type, price, guests, amenities, days);
+
+        System.out.println("Sub-total: £" + new DecimalFormat("#.00").format(subTotal));
+
         double total = checkForDiscount(days, subTotal, discountValue);
 
         System.out.println("Total: £" + new DecimalFormat("#.00").format(total));
@@ -68,8 +68,8 @@ public class Booking {
         double newPrice = subTotal;
 
         if (days >= 14) {
-            double calcuation = days * subTotal;
-            System.out.println("Discount: " + calcuation);
+            double calculation = subTotal * discountValue;
+            System.out.println("Discount: £" + calculation);
             newPrice = applyDiscount(discountValue, subTotal);
         } else {
             System.out.println("No discount");
@@ -85,7 +85,7 @@ public class Booking {
 
         ArrayList<Integer> parsedInts = new ArrayList<>();
 
-        String pattern = "([a-z]{2})-(\\d+)\\n[Gg]-(\\d+)\\n([a-z]{4})-(\\d+)";
+        String pattern = "([a-z]{2})-(\\d+)\\n[g]-(\\d+)\\n([a-z]{4})-(\\d+)";
         Pattern p = Pattern.compile(pattern, Pattern.DOTALL);
         Matcher m = p.matcher(fileContent);
 
@@ -106,10 +106,10 @@ public class Booking {
             parsedInts.add(Integer.parseInt(m.group(3)));
 
             switch (m.group(4)) {
-                case "kit":
+                case "kitc":
                     parsedInts.add(1);
                     break;
-                case "tv":
+                case "park":
                     parsedInts.add(2);
                     break;
                 case "wifi":
